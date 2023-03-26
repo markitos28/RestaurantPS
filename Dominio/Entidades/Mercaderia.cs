@@ -1,4 +1,4 @@
-﻿namespace Dominio
+﻿namespace Dominio.Entidades
 {
     public class Mercaderia
     {
@@ -8,6 +8,8 @@
         public int Precio { get; set; }
         public string Ingredientes { get; set; }
         public string Preparacion { get; set; }
-        public string Imagen { get; set; }    
+        public string Imagen { get; set; }
+        public List<ComandaMercaderia> LsComandaMercaderia { get; set; }
+
     }
 }
