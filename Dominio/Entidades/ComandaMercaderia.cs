@@ -6,5 +6,8 @@
         public int MercaderiaId { get; set; }
         public Guid ComandaId { get; set; }
 
+        public virtual Comanda FKComanda { get; set; }
+        public virtual Mercaderia FKMercaderia { get; set; }
+
     }
 }

@@ -9,7 +9,8 @@
         public string Ingredientes { get; set; }
         public string Preparacion { get; set; }
         public string Imagen { get; set; }
-        public List<ComandaMercaderia> LsComandaMercaderia { get; set; }
+        public virtual List<ComandaMercaderia> LsComandaMercaderia { get; set; }
+        public virtual TipoMercaderia FKTipoMercaderia { get; set; }
 
     }
 }
