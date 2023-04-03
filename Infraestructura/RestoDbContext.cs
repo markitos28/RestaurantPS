@@ -13,7 +13,7 @@ namespace Infraestructura
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=SchoolDB;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"server= DESKTOP-LFB6P0N; Database=Staging; Integrated Security=True; TrustServerCertificate=true;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,6 +33,29 @@ namespace Infraestructura
                 entity.HasKey(k => k.FormaEntregaId);
                 entity.HasMany<Comanda>(m => m.LsComanda).WithOne(o => o.FKFormaEntrega);
                 entity.Property(s => s.Descripcion).HasMaxLength(50);
+
+                entity.HasData(new FormaEntrega
+                {
+                    FormaEntregaId = 1,
+                    Descripcion= "Salon"
+
+                });
+
+                entity.HasData(new FormaEntrega
+                {
+                    FormaEntregaId = 2,
+                    Descripcion = "Delivery"
+
+                });
+
+                entity.HasData(new FormaEntrega
+                {
+                    FormaEntregaId = 3,
+                    Descripcion = "Pedidos Ya"
+
+                });
+
+
             });
 
             modelBuilder.Entity<ComandaMercaderia>(entity =>
@@ -62,6 +85,7 @@ namespace Infraestructura
 
                 entity.HasData(new Mercaderia
                 {
+                    MercaderiaId=1,
                     Nombre= "Hamburguesas de Carne y Cerdo",
                     TipoMercaderiaId= 6,
                     Precio = 2500,
@@ -71,6 +95,7 @@ namespace Infraestructura
                 });
                 entity.HasData(new Mercaderia
                 {
+                    MercaderiaId = 2,
                     Nombre = "Hamburguesas de soja VEGANAS",
                     TipoMercaderiaId = 6,
                     Precio = 2800,
@@ -80,6 +105,7 @@ namespace Infraestructura
                 });
                 entity.HasData(new Mercaderia
                 {
+                    MercaderiaId = 3,
                     Nombre = "Tacos de Carne",
                     TipoMercaderiaId = 6,
                     Precio = 4200,
@@ -89,6 +115,7 @@ namespace Infraestructura
                 });
                 entity.HasData(new Mercaderia
                 {
+                    MercaderiaId = 4,
                     Nombre = "Sandwich de pollo y verduras",
                     TipoMercaderiaId = 6,
                     Precio = 2200,
@@ -98,6 +125,7 @@ namespace Infraestructura
                 });
                 entity.HasData(new Mercaderia
                 {
+                    MercaderiaId = 5,
                     Nombre = "Canastitas de calabaza asada con finas hierbas",
                     TipoMercaderiaId = 2,
                     Precio = 4300,
@@ -107,6 +135,7 @@ namespace Infraestructura
                 });
                 entity.HasData(new Mercaderia
                 {
+                    MercaderiaId = 6,
                     Nombre = "Ñoquis soufflé de espinacas",
                     TipoMercaderiaId = 3,
                     Precio = 3100,
@@ -116,6 +145,7 @@ namespace Infraestructura
                 });
                 entity.HasData(new Mercaderia
                 {
+                    MercaderiaId = 7,
                     Nombre = "Pizza de Jamon y morron",
                     TipoMercaderiaId = 5,
                     Precio = 2100,
@@ -125,6 +155,7 @@ namespace Infraestructura
                 });
                 entity.HasData(new Mercaderia
                 {
+                    MercaderiaId = 8,
                     Nombre = "Papas con Cheddar y Panceta",
                     TipoMercaderiaId = 1,
                     Precio = 1900,
@@ -132,116 +163,127 @@ namespace Infraestructura
                     Preparacion = "P1: Costamos las papas en bastón\nP2: Luego cortamos la panceta en tiras\nP3: Calentamos la plancha y cocinamos la panceta sin ninguna materia grasa. Una vez que está dorada ya está lista",
                     Imagen = ""
                 });
-                /*
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 9,
+                    Nombre = "MOJITO",
+                    TipoMercaderiaId = 8,
+                    Precio = 900 ,
+                    Ingredientes = "Ron Havana 3 años, Menta, Limón, Almíbar, Soda",
+                    Preparacion = "P1: En un vaso agregar decorar con almibar y limon\nP2: Agregar el ron y Soda\nP3: Decorar con menta",
                     Imagen = ""
                 });
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 10,
+                    Nombre = "CAIPIRINHA",
+                    TipoMercaderiaId = 8,
+                    Precio = 900,
+                    Ingredientes = "Cachaza, Lima, Azúcar",
+                    Preparacion = "P1: Decorar el borde de un vaso con lima y azucar.\nP2: Agregar Cachaza hasta llenar y agregar jugo de Lima ",
                     Imagen = ""
                 });
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 11,
+                    Nombre = "CAMPARI TONIC",
+                    TipoMercaderiaId = 8,
+                    Precio = 900,
+                    Ingredientes = "Campari, Agua tónica",
+                    Preparacion = "P1: En una copa, agregar campari y agua tonica 30/70.",
                     Imagen = ""
                 });
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 12,
+                    Nombre = "NEGRONI",
+                    TipoMercaderiaId = 8,
+                    Precio = 1000,
+                    Ingredientes = "Gin Brighton, Campari, Carpano Rosso",
+                    Preparacion = "P1: Agregar en un vaso campari y Gin a gusto.\nP2: Salpicar el trago con Carpano Rosso",
                     Imagen = ""
                 });
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 13,
+                    Nombre = "GANCIA BATIDO",
+                    TipoMercaderiaId = 8,
+                    Precio = 800 ,
+                    Ingredientes = "Gancia, Limón, Azúcar",
+                    Preparacion = "P1: Agregar Gancia y jugo de limon en un vaso.\nP2: Batir y decorar con azucar.",
                     Imagen = ""
                 });
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 14,
+                    Nombre = "Chorizo",
+                    TipoMercaderiaId = 4,
+                    Precio = 500,
+                    Ingredientes = "Chorizo - Carne de vaca",
+                    Preparacion = "P1: Calentar la parrilla y cocinar el chorizo por 40 minutos a fuego lento.",
                     Imagen = ""
                 });
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 15,
+                    Nombre = "Chinchulines",
+                    TipoMercaderiaId = 4,
+                    Precio = 700,
+                    Ingredientes = "Chinchulines de vaca",
+                    Preparacion = "P1: Lavar los chinchulines y dejar en remojo en agua salada.\nP2: Cortar en rodajas\nP3: Cocinar a fuego lento por 60 minutos.",
                     Imagen = ""
                 });
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 16,
+                    Nombre = "Tira de Asado",
+                    TipoMercaderiaId = 4,
+                    Precio = 800,
+                    Ingredientes = "Asado de vaca",
+                    Preparacion = "P1: Calentar la parrilla por 20 minutos.\nP2: Poner la tira de asado a fuego lento sobre la parrilla para su cocción.\nP3: Cocinar por 90 minutos.",
                     Imagen = ""
                 });
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 17,
+                    Nombre = "Bife Americano ",
+                    TipoMercaderiaId = 4,
+                    Precio = 1200,
+                    Ingredientes = "Bife Americano de Vaca",
+                    Preparacion = "P1: Calentar la parrilla por 20 minutos.\nP2: Poner el bife americano a fuego lento sobre la parrilla para su cocción.\nP3: Cocinar por 75 minutos.",
                     Imagen = ""
                 });
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 18,
+                    Nombre = "Helado en copa",
+                    TipoMercaderiaId = 10,
+                    Precio = 1800,
+                    Ingredientes = "Helado de Vainilla / Dulce de leche , Crema dulce, obleas Opera",
+                    Preparacion = "P1: En una copa servir  bochas de helado de cada gusto.\nP2: Decorar con crema y una oblea de galleta Opera",
                     Imagen = ""
                 });
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 19,
+                    Nombre = "Flan casero",
+                    TipoMercaderiaId = 10,
+                    Precio = 900,
+                    Ingredientes = "80gr de azucar, 700cc de leche, 1 pote de leche condensada, 10 huevos, esencia de vainilla",
+                    Preparacion = "P1: Poner los 10 huevos en un bol y agregar el azucar con el pote de leche condensada y esencia de vainilla.\nP2: Mezclar hasta integrar todo.\nP3: Meter al horno por 90 minutos a baño maria",
                     Imagen = ""
                 });
                 entity.HasData(new Mercaderia
                 {
-                    Nombre = "",
-                    TipoMercaderiaId = 1,
-                    Precio = ,
-                    Ingredientes = "",
-                    Preparacion = "",
+                    MercaderiaId = 20,
+                    Nombre = "Budin de Pan",
+                    TipoMercaderiaId = 10,
+                    Precio = 850,
+                    Ingredientes = "400gr de pan, 1 litro de leche, 425g de azucar, 6 huevos, esencia de vainilla",
+                    Preparacion = "P1: Cortar el pan en trozos y dejarlos en remojo con leche.\nP2: Licuar la mezcla y agregar la esencia con el azucar y los huevos.\nP3: Cocinar a fuego lento en el horno a baño maria por 90 minutos.",
                     Imagen = ""
                 });
-                */
+                
             });
 
             modelBuilder.Entity<TipoMercaderia>(entity =>

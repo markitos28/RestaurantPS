@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Comandos\" />
-    <Folder Include="Querys\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Aplicacion\Aplicacion.csproj" />
     <ProjectReference Include="..\Dominio\Dominio.csproj" />
   </ItemGroup>
 

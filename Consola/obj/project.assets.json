@@ -1144,6 +1144,19 @@
           }
         }
       },
+      "Aplicacion/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Dominio": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Aplicacion.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Aplicacion.dll": {}
+        }
+      },
       "Dominio/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -1158,6 +1171,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "Aplicacion": "1.0.0",
           "Dominio": "1.0.0",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.4"
         },
@@ -3479,6 +3493,11 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "Aplicacion/1.0.0": {
+      "type": "project",
+      "path": "../Aplicacion/Aplicacion.csproj",
+      "msbuildProject": "../Aplicacion/Aplicacion.csproj"
     },
     "Dominio/1.0.0": {
       "type": "project",

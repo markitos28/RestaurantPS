@@ -13,3 +13,9 @@ C:\Users\Marcos Sosa\source\repos\RestaurantPS\Aplicacion\obj\Debug\net6.0\refin
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Aplicacion\obj\Debug\net6.0\Aplicacion.pdb
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Aplicacion\obj\Debug\net6.0\Aplicacion.genruntimeconfig.cache
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Aplicacion\obj\Debug\net6.0\ref\Aplicacion.dll
+C:\Users\Marcos Sosa\source\repos\RestaurantPS\Aplicacion\bin\Debug\net6.0\Dominio.deps.json
+C:\Users\Marcos Sosa\source\repos\RestaurantPS\Aplicacion\bin\Debug\net6.0\Dominio.runtimeconfig.json
+C:\Users\Marcos Sosa\source\repos\RestaurantPS\Aplicacion\bin\Debug\net6.0\Dominio.exe
+C:\Users\Marcos Sosa\source\repos\RestaurantPS\Aplicacion\bin\Debug\net6.0\Dominio.dll
+C:\Users\Marcos Sosa\source\repos\RestaurantPS\Aplicacion\bin\Debug\net6.0\Dominio.pdb
+C:\Users\Marcos Sosa\source\repos\RestaurantPS\Aplicacion\obj\Debug\net6.0\Aplicacion.csproj.CopyComplete
