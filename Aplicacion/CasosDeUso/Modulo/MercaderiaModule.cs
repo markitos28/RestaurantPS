@@ -7,18 +7,15 @@ namespace Aplicacion.CasosDeUso.Modulo
 {
     public class MercaderiaModule
     {
-        readonly IMercaderiaCommand _command;
         readonly IMercaderiaQuery _query;
-
-        public MercaderiaModule(IMercaderiaCommand command, IMercaderiaQuery query)
+        public MercaderiaModule(IMercaderiaQuery query)
         {
-            _command = command;
             _query = query;
         }
 
         public List<Mercaderia> ListarMercaderia()
         {
-            var listaMercaderia = _query.SelectMercaderia();
+            var listaMercaderia = _query.SelectListaMercaderia();
             return listaMercaderia;
         }
     }

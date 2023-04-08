@@ -1,7 +1,10 @@
-﻿namespace Aplicacion.Interfaces.Querys
+﻿using Dominio.Entidades;
+
+namespace Aplicacion.Interfaces.Querys
 {
     public interface IComandaQuery
     {
-        /* Se utilizara para listar las comandas vendidas */
+        public List<Comanda> SelectComanda();
+        public (string mensaje, Task<bool> resultado) ComandaExist(Guid comandaId);
     }
 }

@@ -4,9 +4,10 @@ namespace Aplicacion.Interfaces.Querys
 {
     public interface IMercaderiaQuery
     {
-        List<Mercaderia> SelectMercaderia();
-        Mercaderia SelectMercaderia(string nombre);
-        List<Mercaderia> SelectLikeMercaderia(string nombre);
-        List<Mercaderia> SelectMercaderia(int tipoMercaderia);
+        public List<Mercaderia> SelectListaMercaderia();
+        public Mercaderia SelectMercaderia(string nombre);
+        public List<Mercaderia> SelectLikeMercaderia(string nombre);
+        public List<Mercaderia> SelectListaMercaderia(int tipoMercaderia);
+        public Mercaderia SelectMercaderia(int mercaderiaId);
     }
 }

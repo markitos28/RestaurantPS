@@ -23,7 +23,6 @@ namespace Infraestructura.Comandos
                     return true;
                 }
                 return false;
-                
             }
             catch(Exception ex)
             {

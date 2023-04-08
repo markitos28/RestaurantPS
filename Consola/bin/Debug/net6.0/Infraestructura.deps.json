@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "Infraestructura/1.0.0": {
         "dependencies": {
+          "Aplicacion": "1.0.0",
           "Dominio": "1.0.0",
           "Microsoft.EntityFrameworkCore.Design": "7.0.4",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.4",
@@ -700,6 +701,14 @@
           }
         }
       },
+      "Aplicacion/1.0.0": {
+        "dependencies": {
+          "Dominio": "1.0.0"
+        },
+        "runtime": {
+          "Aplicacion.dll": {}
+        }
+      },
       "Dominio/1.0.0": {
         "runtime": {
           "Dominio.dll": {}
@@ -1188,6 +1197,11 @@
       "sha512": "sha512-c1ho9WU9ZxMZawML+ssPKZfdnrg/OjR3pe0m9v8230z3acqphwvPJqzAkH54xRYm5ntZHGG1EPP3sux9H3qSPg==",
       "path": "system.windows.extensions/5.0.0",
       "hashPath": "system.windows.extensions.5.0.0.nupkg.sha512"
+    },
+    "Aplicacion/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "Dominio/1.0.0": {
       "type": "project",
