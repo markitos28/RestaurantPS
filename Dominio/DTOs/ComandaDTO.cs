@@ -13,6 +13,5 @@ namespace Dominio.DTOs
         public int PrecioTotal { get; set; }
         [Required]
         public DateTime Fecha { get; set; }
-        public List<ComandaMercaderiaDTO> LsComandaMercaderia { get; set; }
     }
 }

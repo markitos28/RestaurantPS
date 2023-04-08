@@ -29,7 +29,7 @@ namespace Infraestructura.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Fecha")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<int>("FormaEntregaId")
                         .HasColumnType("int");
@@ -146,7 +146,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 1,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1xPKcmbPTsvVBwaNx37xEzp6gtbfT1WtJ/view",
                             Ingredientes = "500gr Bondiola de cerdo / 500gr Carne roast beef / 100gr Panceta salada / Mostaza / Condimentos a elección y sal / Cebolla morada tomates / Queso",
                             Nombre = "Hamburguesas de Carne y Cerdo",
                             Precio = 2500,
@@ -156,7 +156,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 2,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1E91-s9vzk17FGJGSVIyqGVH5kVTeQzb9/view",
                             Ingredientes = "2 tazas soja texturizada en crudo / Agua / Puñado perejil / 1 cebolla mediana / 3 dientes ajo / Pedazo morrón rojo  / 6 cucharadas soperas harina integral/ 2 cucharadas soperas avena instantánea/ Harina para rebozar ",
                             Nombre = "Hamburguesas de soja VEGANAS",
                             Precio = 2800,
@@ -166,7 +166,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 3,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1kL9nMYb3wTNWri2N099LhZoYoJp1btXP/view",
                             Ingredientes = "6 rapiditas/ 4 bifes de carne magra / 1 cebolla mediana / 1 cebolla morada mediana / Morrones (rojo, verde y amarillo) / 4dientes ajo / Poquito pimentón dulce/ Queso crema (opcional)",
                             Nombre = "Tacos de Carne",
                             Precio = 4200,
@@ -176,7 +176,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 4,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1tSMAO2-yZoDM3z3O4QkNzj25FLj-ovqp/view",
                             Ingredientes = "Pechugas de pollo/ Mitad cebolla/ Ajo cantidad a gusto/ 1 cuarto morrón rojo/ 1 zanahoria/ 1 puñado Queso mozza rallado/ Sal,Pimienta y perejil a gusto/ Cebolla de verdeo a gusto/ 1 cucharada Mayonesa/ 1 cucharaditaMostaza/ Pan de hamburguesas",
                             Nombre = "Sandwich de pollo y verduras",
                             Precio = 2200,
@@ -186,7 +186,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 5,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1ZsYM1Y84JPPyznF3OmV8km5AJqxIr-Lh/view",
                             Ingredientes = "1 calabaza mediana/ 2 huevos/ 100 gr queso rallado/ Hierbas secas o frescas a elección/ Orégano/ Romero/ Tomillo/ Albahaca/ Sal/ Aceite de oliva/ 12 tapas de empanadas chicas",
                             Nombre = "Canastitas de calabaza asada con finas hierbas",
                             Precio = 4300,
@@ -196,7 +196,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 6,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1daQZfHgmK-P_1qd_qn_Odk766IkoI3Al/view",
                             Ingredientes = "1 kilo harina 000 / 1/2 taza aceite / 600 cc agua hirviendo / 10 hojas espinacas bien lavadas / 1 cucharada sal ",
                             Nombre = "Ñoquis soufflé de espinacas",
                             Precio = 3100,
@@ -206,17 +206,17 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 7,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1g1yLG9S4vDO5WVKoTGcXjByr21UbUZ4K/view",
                             Ingredientes = "200 g harina 0000 / 80 ml agua / 10 ml aceite de girasol / 7 g levadura seca / 30 ml salsa de tomate / 1 pizca sal, pimienta blanca, pizca orégano / 1 chorrito aceite de oliva / 75 g queso porsalut /1/2 tomate redondo un huevo/ 6 fetas jamón cocido",
                             Nombre = "Pizza de Jamon y morron",
                             Precio = 2100,
-                            Preparacion = "",
+                            Preparacion = "P1: Hacer un volcan con la harina,agregar la levadura e integrar.\nP2: Ir agregando el agua con el aceite y amasar.\nP3: Estirar en forma de pizza, agregar la salsa y condimentos.\nP4: Cocinar agregarndo los quesos encima de la masa.",
                             TipoMercaderiaId = 5
                         },
                         new
                         {
                             MercaderiaId = 8,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1wSuSxZfzGAOYLujShTfxaYhWK0R0EPt5/view",
                             Ingredientes = "5 papás / 200 gr panceta / Queso cheddar / Crema de leche",
                             Nombre = "Papas con Cheddar y Panceta",
                             Precio = 1900,
@@ -226,7 +226,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 9,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1Gzg_rCtYUffWPqRYRuKVTH9MS4zEsayC/view",
                             Ingredientes = "Ron Havana 3 años, Menta, Limón, Almíbar, Soda",
                             Nombre = "MOJITO",
                             Precio = 900,
@@ -236,7 +236,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 10,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1PCI5E0wW1ZpTCi8n5gzu93S3op_dXfE0/view",
                             Ingredientes = "Cachaza, Lima, Azúcar",
                             Nombre = "CAIPIRINHA",
                             Precio = 900,
@@ -246,7 +246,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 11,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1SmWW3AYClTQjWSrcFtx6igYroIjiGmRa/view",
                             Ingredientes = "Campari, Agua tónica",
                             Nombre = "CAMPARI TONIC",
                             Precio = 900,
@@ -256,7 +256,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 12,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1X6FHcKRVqgIO9SpY0Wb4-jDdspCLfgyj/view",
                             Ingredientes = "Gin Brighton, Campari, Carpano Rosso",
                             Nombre = "NEGRONI",
                             Precio = 1000,
@@ -266,7 +266,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 13,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1jjtoaOMDfmhtxlJIgCGtzmTV8Z-mGxCc/view",
                             Ingredientes = "Gancia, Limón, Azúcar",
                             Nombre = "GANCIA BATIDO",
                             Precio = 800,
@@ -276,7 +276,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 14,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1UhYg6vNMURHFWhJnbwevTPEHH8uBXbmE/view",
                             Ingredientes = "Chorizo - Carne de vaca",
                             Nombre = "Chorizo",
                             Precio = 500,
@@ -286,7 +286,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 15,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1K5Q9JrEa1lRHSH23gDM0ZR2HCFWaBRv6/view",
                             Ingredientes = "Chinchulines de vaca",
                             Nombre = "Chinchulines",
                             Precio = 700,
@@ -296,7 +296,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 16,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1rGKWzKEpi2JInh7v6ht3i8mlTOPh96sl/view",
                             Ingredientes = "Asado de vaca",
                             Nombre = "Tira de Asado",
                             Precio = 800,
@@ -306,9 +306,9 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 17,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/13TRC10uTERzdzHUzKYXkf-4PKjfTngLK/view",
                             Ingredientes = "Bife Americano de Vaca",
-                            Nombre = "Bife Americano ",
+                            Nombre = "Bife Americano",
                             Precio = 1200,
                             Preparacion = "P1: Calentar la parrilla por 20 minutos.\nP2: Poner el bife americano a fuego lento sobre la parrilla para su cocción.\nP3: Cocinar por 75 minutos.",
                             TipoMercaderiaId = 4
@@ -316,7 +316,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 18,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1nXp9l_8pvU3VGgL7VSZF49n7ym4_0Br5/view",
                             Ingredientes = "Helado de Vainilla / Dulce de leche , Crema dulce, obleas Opera",
                             Nombre = "Helado en copa",
                             Precio = 1800,
@@ -326,7 +326,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 19,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1lD0i_VwhuPpYXEvrNvCxpPVwQTNP1YUe/view",
                             Ingredientes = "80gr de azucar, 700cc de leche, 1 pote de leche condensada, 10 huevos, esencia de vainilla",
                             Nombre = "Flan casero",
                             Precio = 900,
@@ -336,7 +336,7 @@ namespace Infraestructura.Migrations
                         new
                         {
                             MercaderiaId = 20,
-                            Imagen = "",
+                            Imagen = "https://drive.google.com/file/d/1Gzlx8q0NKQLfUEILZKFxsD6xoqDX17gF/view",
                             Ingredientes = "400gr de pan, 1 litro de leche, 425g de azucar, 6 huevos, esencia de vainilla",
                             Nombre = "Budin de Pan",
                             Precio = 850,

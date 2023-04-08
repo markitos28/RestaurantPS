@@ -13,15 +13,15 @@ namespace Aplicacion.CasosDeUso.Modulo
             _command = command;
         }
 
-        public bool InsertarComandaMercaderia(ComandaMercaderiaDTO objComandaMercaderia)
+        public Task<bool> InsertarComandaMercaderia(ComandaMercaderiaDTO objComandaMercaderia)
         {
             ComandaMercaderia cm = new ComandaMercaderia
             {
                 MercaderiaId = objComandaMercaderia.MercaderiaId,
                 ComandaId = objComandaMercaderia.ComandaId
             };
-            _command.InsertComandaMercaderia(cm);
-            return true;
+            var operacion = _command.InsertComandaMercaderia(cm);
+            return operacion;
         }
     }
 }

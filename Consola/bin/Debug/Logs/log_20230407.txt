@@ -1,0 +1,3 @@
+El proceso arrojo un error en la linea Sequence contains no elements del archivo Infraestructura.Querys.ComandaQuery - 18:48:30
+El proceso arrojo un error en la linea Sequence contains no elements del archivo Infraestructura.Querys.ComandaQuery - 18:49:11
+El proceso arrojo un error en la linea Sequence contains no elements del archivo Infraestructura.Querys.ComandaQuery - 18:50:14

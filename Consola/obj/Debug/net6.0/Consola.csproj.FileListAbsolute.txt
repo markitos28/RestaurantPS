@@ -79,3 +79,8 @@ C:\Users\Marcos Sosa\source\repos\RestaurantPS\Consola\bin\Debug\net6.0\Dominio.
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Consola\bin\Debug\net6.0\Infraestructura.dll
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Consola\bin\Debug\net6.0\Infraestructura.pdb
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Consola\bin\Debug\net6.0\Dominio.pdb
+C:\Users\Marcos Sosa\source\repos\RestaurantPS\Consola\bin\Debug\net6.0\Aplicacion.deps.json
+C:\Users\Marcos Sosa\source\repos\RestaurantPS\Consola\bin\Debug\net6.0\Aplicacion.runtimeconfig.json
+C:\Users\Marcos Sosa\source\repos\RestaurantPS\Consola\bin\Debug\net6.0\Aplicacion.exe
+C:\Users\Marcos Sosa\source\repos\RestaurantPS\Consola\bin\Debug\net6.0\Aplicacion.dll
+C:\Users\Marcos Sosa\source\repos\RestaurantPS\Consola\bin\Debug\net6.0\Aplicacion.pdb
