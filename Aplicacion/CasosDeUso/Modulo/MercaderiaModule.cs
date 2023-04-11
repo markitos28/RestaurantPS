@@ -1,7 +1,5 @@
-﻿using Aplicacion.Interfaces.Comandos;
-using Aplicacion.Interfaces.Querys;
+﻿using Aplicacion.Interfaces.Querys;
 using Dominio.Entidades;
-using Aplicacion.Interfaces;
 
 namespace Aplicacion.CasosDeUso.Modulo
 {

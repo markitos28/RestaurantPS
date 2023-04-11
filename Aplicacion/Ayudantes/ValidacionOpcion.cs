@@ -16,7 +16,7 @@
                 bool esNumero = int.TryParse(_validacion, out valor);
                 return (esNumero, valor);
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 return (false, -1);
             }

@@ -1,12 +1,6 @@
 ﻿using Aplicacion.Interfaces.Querys;
 using Dominio.Entidades;
 using SlnManagerText;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infraestructura.Querys
 {

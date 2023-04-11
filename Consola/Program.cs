@@ -62,7 +62,6 @@ async void tomarPedido(RestoDbContext dbConnection)
     List<Mercaderia> pedido = new List<Mercaderia>();
     ComandaDTO comanda;
     var newComandaId =  new GenerarIdentificador(comandaQuery).GenerarIdComanda();
-    await newComandaId;
     ComandaMercaderiaDTO comandaMercaderia;
     bool flagFin = false;
     int precioTotal=0;
@@ -76,8 +75,8 @@ async void tomarPedido(RestoDbContext dbConnection)
     Console.WriteLine("Por favor, seleccione mediante los numeros los pedidos que desea realizar . . .");
     Console.WriteLine("Si desea eliminar un pedido, anteponga el signo '-' delante del numero.");
     Console.WriteLine("La cartilla es:");
-
-    for(int i=0; i<lsMercaderia.Count; i++)
+    await newComandaId;
+    for (int i=0; i<lsMercaderia.Count; i++)
     {
         Console.WriteLine("{0}) {1}\t\tPrecio: {2}", i+1, lsMercaderia[i].Nombre, lsMercaderia[i].Precio);
     }
@@ -94,7 +93,7 @@ async void tomarPedido(RestoDbContext dbConnection)
         Console.WriteLine("Ingrese una opcion: ");
         opcion = Console.ReadLine();
         var validar = new Validador(opcion).OpcionValida();
-        if (validar.esValido & validar.valor <= lsMercaderia.Count & validar.valor >= (lsMercaderia.Count * -1))
+        if (validar.esValido && validar.valor <= lsMercaderia.Count && validar.valor >= (lsMercaderia.Count * -1))
         {
             if(validar.valor > 0)
             {
@@ -144,7 +143,7 @@ async void tomarPedido(RestoDbContext dbConnection)
             Console.WriteLine("Ingrese una opcion: ");
             opcion = Console.ReadLine();
             var validar = new Validador(opcion).OpcionValida();
-            if (validar.esValido & validar.valor < lsFormaEntrega.Count & validar.valor >= 1)
+            if (validar.esValido && validar.valor <= lsFormaEntrega.Count && validar.valor >= 1)
             {
 
                 comanda = new ComandaDTO
@@ -200,6 +199,7 @@ void listarPedido(RestoDbContext dbConnection)
     {
         Console.WriteLine("Nro Comanda: {0} | Fecha: {1} | Forma de Entrega: {2} | Mercaderia: {3} | Precio: {4}", pedido.ComandaId, pedido.FechaComanda, pedido.DescripcionEntrega, pedido.NombreMercaderia, pedido.PrecioMercaderia);
         Console.WriteLine("Ingredientes: {0}", pedido.IngredientesMercaderia);
+        Console.WriteLine();
     }
     Console.WriteLine("Presione Enter para finalizar . . .");
     Console.ReadKey();

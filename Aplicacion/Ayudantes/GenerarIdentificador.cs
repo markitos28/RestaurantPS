@@ -1,11 +1,9 @@
 ﻿using Aplicacion.Interfaces.Querys;
-using System.Windows.Markup;
 
 namespace Aplicacion.Ayudantes
 {
     public class GenerarIdentificador
-    {
-        readonly Guid guid;
+    { 
         readonly IComandaQuery _queryComanda;
         readonly IComandaMercaderiaQuery _queryComandaMercaderia;
         public GenerarIdentificador(IComandaQuery query)
