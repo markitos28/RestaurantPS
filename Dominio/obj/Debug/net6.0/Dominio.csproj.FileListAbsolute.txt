@@ -1,6 +1,4 @@
-C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\bin\Debug\net6.0\Dominio.exe
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\bin\Debug\net6.0\Dominio.deps.json
-C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\bin\Debug\net6.0\Dominio.runtimeconfig.json
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\bin\Debug\net6.0\Dominio.dll
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\bin\Debug\net6.0\Dominio.pdb
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\obj\Debug\net6.0\Dominio.csproj.AssemblyReference.cache
@@ -11,5 +9,4 @@ C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\obj\Debug\net6.0\Dominio.
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\obj\Debug\net6.0\Dominio.dll
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\obj\Debug\net6.0\refint\Dominio.dll
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\obj\Debug\net6.0\Dominio.pdb
-C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\obj\Debug\net6.0\Dominio.genruntimeconfig.cache
 C:\Users\Marcos Sosa\source\repos\RestaurantPS\Dominio\obj\Debug\net6.0\ref\Dominio.dll
