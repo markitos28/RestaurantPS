@@ -54,7 +54,7 @@ namespace Infraestructura.Querys
                 var find = (from c in _context.Comanda
                             where c.ComandaId == comandaId
                             select c.ComandaId).FirstOrDefault();
-                if (find.Equals(default(Guid)))
+                if (find.Equals(Guid.Empty))
                 {
                     return ("OK",Task.FromResult(false));
                 }

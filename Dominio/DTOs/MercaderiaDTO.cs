@@ -23,7 +23,6 @@ namespace Dominio.DTOs
         [Required]
         [StringLength(255)]
         public string Imagen { get; set; }
-        public List<ComandaMercaderiaDTO> LsComandaMercaderia { get; set; }
 
     }
 }

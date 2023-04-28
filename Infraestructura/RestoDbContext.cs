@@ -11,10 +11,12 @@ namespace Infraestructura
         public DbSet<Mercaderia> Mercaderia { get; set; }
         public DbSet<TipoMercaderia> TipoMercaderia { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public RestoDbContext(DbContextOptions<RestoDbContext> options) : base(options)
         {
-            optionsBuilder.UseSqlServer(@"server= DESKTOP-LFB6P0N; Database=Staging; Integrated Security=True; TrustServerCertificate=true;");
+
         }
+
+        public RestoDbContext() { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
