@@ -7,5 +7,6 @@ namespace Aplicacion.Interfaces.Querys
         public List<ComandaMercaderia> SelectComandaMercaderia();
         public List<ComandaMercaderia> SelectComandaMercaderia(Guid comandaId);
         public List<ComandaMercaderia> SelectComandaMercaderia(int mercaderiaId);
+        public (bool exist, int returnCode) ExisteMercaderiaEnComanda(int mercaderiaId);
     }
 }

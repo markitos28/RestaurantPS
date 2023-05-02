@@ -1,6 +1,9 @@
 ﻿using Aplicacion.Interfaces.Querys;
 using Dominio.Entidades;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SlnManagerText;
+using System.ComponentModel.Design;
 
 namespace Infraestructura.Querys
 {
@@ -80,6 +83,82 @@ namespace Infraestructura.Querys
                     log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
                 }
                 return ("Error: Ha ocurrido una excepcion", Task.FromResult(true));
+            }
+        }
+
+        public Comanda SelectComanda(Guid comandaId)
+        {
+            try
+            {
+                var comanda = (from c in _context.Comanda
+                               where c.ComandaId.Equals(comandaId)
+                               select c).FirstOrDefault();
+                return comanda;
+            }
+            catch (DbUpdateException ex)
+            {
+                var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
+                if (log.createLog())
+                {
+                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
+                }
+                return null;
+            }
+            catch (SqlException ex)
+            {
+                var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
+                if (log.createLog())
+                {
+                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
+                if (log.createLog())
+                {
+                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
+                }
+                return null;
+            }
+        }
+
+        public List<Comanda> SelectComandas(DateTime fecha)
+        {
+            try
+            {
+                var comanda = (from c in _context.Comanda
+                               where c.Fecha.Equals(fecha)
+                               select c).ToList();
+                return comanda;
+            }
+            catch (DbUpdateException ex)
+            {
+                var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
+                if (log.createLog())
+                {
+                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
+                }
+                return null;
+            }
+            catch (SqlException ex)
+            {
+                var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
+                if (log.createLog())
+                {
+                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
+                if (log.createLog())
+                {
+                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
+                }
+                return null;
             }
         }
     }

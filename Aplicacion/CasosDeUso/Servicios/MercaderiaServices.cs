@@ -11,11 +11,13 @@ namespace Aplicacion.CasosDeUso.Servicios
     {
         readonly private IMercaderiaCommand _command;
         readonly private IMercaderiaQuery _query;
+        readonly private IComandaMercaderiaQuery _cmQuery;
 
-        public MercaderiaServices(IMercaderiaCommand command, IMercaderiaQuery query)
+        public MercaderiaServices(IMercaderiaCommand command, IMercaderiaQuery query, IComandaMercaderiaQuery cmQuery)
         {
             _command = command;
             _query = query;
+            _cmQuery = cmQuery;
         }
 
         public Task<MercaderiaDTO> AddMercaderia(MercaderiaDTO mercaderia)
@@ -25,10 +27,15 @@ namespace Aplicacion.CasosDeUso.Servicios
             
         }
 
-        public Task<bool> DeleteMercaderia(int mercaderiaId)
+        public Task<(bool status, int returnCode)> DeleteMercaderia(int mercaderiaId)
         {
-            var delete = _command.DeleteMercaderia(mercaderiaId);
-            return delete;
+            var dependencia = _cmQuery.ExisteMercaderiaEnComanda(mercaderiaId);
+            if (!dependencia.exist && dependencia.returnCode.Equals(0))
+            {
+                var delete = _command.DeleteMercaderia(mercaderiaId);
+                return Task.FromResult((delete.Result, dependencia.returnCode));
+            }
+            return Task.FromResult((false, dependencia.returnCode));
         }
 
         public Task<MercaderiaDTO> GetMercaderia(int mercaderiaId)
@@ -53,7 +60,28 @@ namespace Aplicacion.CasosDeUso.Servicios
            
         }
 
-        public Task<List<MercaderiaDTO>> GetMercaderia()
+        public Task<MercaderiaDTO> GetMercaderia(string nombre)
+        {
+            var select = _query.SelectMercaderia(nombre);
+            if (select != null)
+            {
+                var mappMercaderia = new MercaderiaDTO()
+                {
+                    MercaderiaId = select.MercaderiaId,
+                    Nombre = select.Nombre,
+                    TipoMercaderiaId = select.TipoMercaderiaId,
+                    Precio = select.Precio,
+                    Ingredientes = select.Ingredientes,
+                    Preparacion = select.Preparacion,
+                    Imagen = select.Imagen
+                };
+
+                return Task.FromResult(mappMercaderia);
+            }
+            return null;
+        }
+
+        public Task<List<MercaderiaDTO>> GetMercaderias()
         {
             
             var mercaderias = _query.SelectListaMercaderia();
@@ -83,6 +111,51 @@ namespace Aplicacion.CasosDeUso.Servicios
         {
             var update = _command.UpdateMercaderia(mercaderia);
             return update;
+        }
+
+        public Task<List<MercaderiaDTO>> GetListMercaderia(int tipo, string nombre, string orden)
+        {
+            List<MercaderiaDTO> response = new List<MercaderiaDTO>(); ;
+            List<Mercaderia> query ;
+            if (!string.IsNullOrEmpty(nombre) && tipo != -1)
+            {
+                query = _query.SelectMercaderia(tipo, nombre);
+            }
+            else if (!string.IsNullOrEmpty(nombre) && tipo == -1)
+            {
+                query = _query.SelectLikeMercaderia(nombre);
+            }
+            else
+            {
+                query = _query.SelectListaMercaderia(tipo);
+            }
+            if(query != null)
+            {
+                foreach (Mercaderia puntero in query)
+                {
+                    response.Add(new MercaderiaDTO
+                    {
+                        MercaderiaId = puntero.MercaderiaId,
+                        Nombre = puntero.Nombre,
+                        TipoMercaderiaId = puntero.TipoMercaderiaId,
+                        Precio = puntero.Precio,
+                        Ingredientes = puntero.Ingredientes,
+                        Preparacion = puntero.Preparacion,
+                        Imagen = puntero.Imagen
+
+                    });
+                }
+            }
+            
+            if (orden.Equals("ASC"))
+            {
+                return Task.FromResult(response.OrderBy(o => o.Precio).ToList<MercaderiaDTO>());
+            }
+            else
+            {
+                return Task.FromResult(response.OrderByDescending(o => o.Precio).ToList<MercaderiaDTO>());
+            }
+
         }
 
     }

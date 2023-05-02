@@ -1,7 +1,8 @@
-﻿using Aplicacion.Interfaces.Servicios;
+﻿using Aplicacion.CasosDeUso.Servicios;
+using Aplicacion.Interfaces.Servicios;
 using Dominio.DTOs;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Runtime.CompilerServices;
 
 namespace WAPIRestaurantPS.Controllers
 {
@@ -17,6 +18,44 @@ namespace WAPIRestaurantPS.Controllers
             _services = services;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetMercaderia(int? tipo , string? nombre, string orden= "ASC")
+        {
+            try
+            {
+                if (tipo == null && nombre == null)
+                {
+                    return new JsonResult(new { Message = "Se debe ingresar al menos un parametros para filtrar la mercaderia." }) { StatusCode = 404 };
+                }
+                if (orden.ToUpper() != "ASC" && orden.ToUpper() != "DESC")
+                {
+                    return new JsonResult(new { Message = "Se ha ingresado el parametro 'orden' incorrectamente. Debe ser ASC o DESC." }) { StatusCode = 404 };
+                }
+                List<MercaderiaDTO> mercaderias = new List<MercaderiaDTO>();
+
+                if (tipo == null)
+                {
+                    mercaderias = await _services.GetListMercaderia(-1, nombre, orden.ToUpper());
+                }
+                else if (string.IsNullOrEmpty(nombre))
+                {
+                    mercaderias = await _services.GetListMercaderia(tipo.Value , "", orden.ToUpper());
+                }
+                else
+                {
+                    mercaderias = await _services.GetListMercaderia(tipo.Value, nombre, orden.ToUpper());
+                }
+
+                return new JsonResult(mercaderias);
+            }
+            catch
+            {
+                return new JsonResult(new { Message = "Ha ocurrido un error en el microservicio." }) { StatusCode = 409 };
+            }
+            
+            
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMercaderia(int id)
         {
@@ -29,7 +68,7 @@ namespace WAPIRestaurantPS.Controllers
                 }
                 var delete = await  _services.DeleteMercaderia(id);
 
-                if (delete == true)
+                if (delete.status && delete.returnCode.Equals(0))
                 {
                     return new JsonResult(obj) { StatusCode = 200 };
                 }
@@ -40,7 +79,7 @@ namespace WAPIRestaurantPS.Controllers
             }
             catch
             {
-                return new JsonResult(new { Message = "Hubo un error en el servidor. Intente mas tarde" }) { StatusCode = 409 };
+                return new JsonResult(new { Message = "Hubo un error en el microservicio. Intente mas tarde" }) { StatusCode = 409 };
             }
         }
 
@@ -100,6 +139,11 @@ namespace WAPIRestaurantPS.Controllers
                 if (mercaderia.Imagen.Length > 256 || mercaderia.Imagen == "" || mercaderia.Imagen == "string")
                     return new JsonResult(new { Message = "El campo Imagen tiene mas de 255 caracteres, es vacio o no se ha modificado en la estructura del JSON." }) { StatusCode = 400 };
 
+                
+                if(_services.GetMercaderia(mercaderia.Nombre) != null)
+                {
+                    return new JsonResult(new { Message = "El nombre de la mercaderia que intenta insertar ya existe." }) { StatusCode = 400 };
+                }
 
                 MercaderiaDTO mapMercaderia = new MercaderiaDTO()
                 {
