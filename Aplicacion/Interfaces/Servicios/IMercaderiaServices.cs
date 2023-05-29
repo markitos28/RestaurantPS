@@ -8,7 +8,7 @@ namespace Aplicacion.Interfaces.Servicios
         Task<(MercaderiaResponse2 response, string description, int error)> UpdateMercaderia(int id, MercaderiaRequest mercaderia);
         Task<(MercaderiaResponse2 response, string status)> DeleteMercaderia(int mercaderiaId);
         Task<MercaderiaResponse2> GetMercaderia(int mercaderiaId);
-        Task<List<MercaderiaDTO>> GetMercaderias();
+        Task<List<MercaderiaResponse>> GetMercaderias();
         Task<MercaderiaDTO> GetMercaderia(string nombre);
         Task<List<MercaderiaResponse>> GetListMercaderia(int tipo, string nombre, string orden);
 

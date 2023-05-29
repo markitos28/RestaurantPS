@@ -138,27 +138,31 @@ namespace Aplicacion.CasosDeUso.Servicios
             return null;
         }
 
-        public Task<List<MercaderiaDTO>> GetMercaderias()
+        public async Task<List<MercaderiaResponse>> GetMercaderias()
         {
             
             var mercaderias = _query.SelectListaMercaderia();
             if(mercaderias != null)
             {
-                List<MercaderiaDTO> list = new List<MercaderiaDTO>();
+                List<MercaderiaResponse> list = new List<MercaderiaResponse>();
                 foreach (Mercaderia mercaderia in mercaderias)
                 {
-                    list.Add(new MercaderiaDTO()
+                    var tipoMercaderia = await _queryTipoMercaderia.GetTipoMercaderia(mercaderia.TipoMercaderiaId);
+                    var mappTipoMercaderia = new TipoMercaderiaDTO()
                     {
-                        MercaderiaId = mercaderia.MercaderiaId,
+                        Id = tipoMercaderia.TipoMercaderiaId,
+                        Descripcion = tipoMercaderia.Descripcion
+                    };
+                    list.Add(new MercaderiaResponse()
+                    {
+                        Id = mercaderia.MercaderiaId,
                         Nombre = mercaderia.Nombre,
-                        TipoMercaderiaId = mercaderia.TipoMercaderiaId,
+                        Tipo = mappTipoMercaderia,
                         Precio = mercaderia.Precio,
-                        Ingredientes = mercaderia.Ingredientes,
-                        Preparacion = mercaderia.Preparacion,
                         Imagen = mercaderia.Imagen
                     });
                 }
-                return Task.FromResult(list);
+                return list;
             }
             return null;
             
