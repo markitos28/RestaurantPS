@@ -3,6 +3,7 @@ using Dominio.DTOs;
 using Dominio.Entidades;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SlnManagerText;
 
 
@@ -65,12 +66,10 @@ namespace Infraestructura.Comandos
 
         }
 
-        public async Task<MercaderiaDTO> InsertMercaderia(MercaderiaDTO mercaderia)
+        public async Task<Mercaderia> InsertMercaderia(MercaderiaDTO mercaderia)
         {
             try
             {
-                var maxMercaderia = (from m in _context.Mercaderia
-                             select m).OrderByDescending(o => o.MercaderiaId).FirstOrDefault();
                 Mercaderia mapMercaderia = new Mercaderia()
                 {
                     TipoMercaderiaId = mercaderia.TipoMercaderiaId,
@@ -80,10 +79,11 @@ namespace Infraestructura.Comandos
                     Preparacion = mercaderia.Preparacion,
                     Imagen = mercaderia.Imagen
                 };
-                var response = _context.Add(mapMercaderia);
+
+                _context.Add(mapMercaderia);
                 await _context.SaveChangesAsync();
-                mercaderia.MercaderiaId= response.Entity.MercaderiaId;
-                return mercaderia;
+                
+                return mapMercaderia;
             }
             catch (DbUpdateException ex)
             {
@@ -114,25 +114,25 @@ namespace Infraestructura.Comandos
             }
         }
 
-        public Task<MercaderiaDTO> UpdateMercaderia(MercaderiaDTO mercaderia)
+        public async Task<Mercaderia> UpdateMercaderia(int id, MercaderiaRequest mercaderia)
         {
             
             try
             {
                 var select = (from m in _context.Mercaderia
-                              where m.MercaderiaId == mercaderia.MercaderiaId
+                              where m.MercaderiaId == id
                               select m).FirstOrDefault();
                 if (select != null )
                 {
-                    select.Nombre = mercaderia.Nombre;
-                    select.Precio = mercaderia.Precio;
-                    select.Preparacion = mercaderia.Preparacion;
-                    select.Ingredientes = mercaderia.Ingredientes;
-                    select.Imagen = mercaderia.Imagen;
-                    select.TipoMercaderiaId = mercaderia.TipoMercaderiaId;
+                    select.Nombre = mercaderia.Nombre.IsNullOrEmpty() ? select.Nombre: mercaderia.Nombre;
+                    select.Precio = mercaderia.Precio.Equals(0) ? select.Precio: mercaderia.Precio;
+                    select.Preparacion = mercaderia.Preparacion.IsNullOrEmpty()?  select.Preparacion: mercaderia.Preparacion;
+                    select.Ingredientes = mercaderia.Ingredientes.IsNullOrEmpty() ? select.Ingredientes : mercaderia.Ingredientes;
+                    select.Imagen = mercaderia.Imagen.IsNullOrEmpty() ? select.Imagen : mercaderia.Imagen;
+                    select.TipoMercaderiaId = mercaderia.Tipo.Equals(0) ? select.TipoMercaderiaId: mercaderia.Tipo  ;
 
                     _context.SaveChanges();
-                    return Task.FromResult(mercaderia);
+                    return select;
                 }
                 
                 return null;

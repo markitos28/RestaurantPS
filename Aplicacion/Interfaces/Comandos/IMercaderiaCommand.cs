@@ -1,12 +1,13 @@
-﻿using Dominio.DTOs;
+﻿using Dominio.Entidades;
+using Dominio.DTOs;
 
 namespace Aplicacion.Interfaces.Comandos
 {
     public interface IMercaderiaCommand
     {
-        Task<MercaderiaDTO> InsertMercaderia(MercaderiaDTO mercaderia);
+        Task<Mercaderia> InsertMercaderia(MercaderiaDTO mercaderia);
         Task<bool> DeleteMercaderia(int id);
-        Task<MercaderiaDTO> UpdateMercaderia(MercaderiaDTO mercaderia);
+        Task<Mercaderia> UpdateMercaderia(int id, MercaderiaRequest mercaderia);
 
     }
 }

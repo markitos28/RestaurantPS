@@ -3,8 +3,6 @@ using Aplicacion.Interfaces.Comandos;
 using Aplicacion.Interfaces.Servicios;
 using Dominio.DTOs;
 using Dominio.Entidades;
-using System.ComponentModel.Design;
-using Aplicacion.Ayudantes;
 
 namespace Aplicacion.CasosDeUso.Servicios
 {
@@ -26,108 +24,168 @@ namespace Aplicacion.CasosDeUso.Servicios
             _commandComandaMercaderia = commandComandaMercaderia;
 
         }
-        public Task<ComandaDetalleResponse> GetComanda(Guid comandaId)
+        public async Task<ComandaResponse> GetComanda(Guid comandaId)
         {
-            ComandaDetalleResponse comandaDetalleResponse = new ComandaDetalleResponse();
+            ComandaResponse comandaResponse = new ComandaResponse();
             var comanda = _queryComanda.SelectComanda(comandaId);
             var comandaMercaderia = _queryComandaMercaderia.SelectComandaMercaderia(comandaId);
-
+            comandaResponse.Mercaderias = new List<MercaderiaComandaResponse>();
             if(comanda != null && comandaMercaderia != null)
             {
                 foreach (ComandaMercaderia cm in comandaMercaderia)
                 {
-                    var mercaderia = _queryMercaderia.SelectMercaderia(cm.MercaderiaId);
-                    comandaDetalleResponse.Mercaderias.Add(new MercaderiaDTO(){
-                        MercaderiaId= mercaderia.MercaderiaId,
+                    var mercaderia = await _queryMercaderia.SelectMercaderia(cm.MercaderiaId);
+                    comandaResponse.Mercaderias.Add(new MercaderiaComandaResponse()
+                    {
+                        Id= mercaderia.MercaderiaId,
                         Nombre= mercaderia.Nombre,
-                        TipoMercaderiaId = mercaderia.TipoMercaderiaId,
-                        Precio = mercaderia.Precio,
-                        Ingredientes = mercaderia.Ingredientes,
-                        Preparacion = mercaderia.Preparacion,
-                        Imagen = mercaderia.Imagen
+                        Precio= mercaderia.Precio
                     });
                 }
-                comandaDetalleResponse.ComandaId = comanda.ComandaId;
+                comandaResponse.Id = comanda.ComandaId;
                 var formaEntrega = _queryFormaEntrega.GetFormaEntrega(comanda.FormaEntregaId);
-                comandaDetalleResponse.FormaEntrega = new FormaEntregaDTO()
+                comandaResponse.FormaEntrega = new FormaEntregaDTO()
                 {
-                    FormaEntregaId= formaEntrega.FormaEntregaId,
+                    Id = formaEntrega.FormaEntregaId,
                     Descripcion = formaEntrega.Descripcion
                 };
-                comandaDetalleResponse.PrecioTotal= comanda.PrecioTotal;
-                comandaDetalleResponse.Fecha = comanda.Fecha;
 
-                return Task.FromResult(comandaDetalleResponse);
+                comandaResponse.Total = comanda.PrecioTotal;
+                comandaResponse.Fecha = comanda.Fecha;
+
+                return comandaResponse;
             }
             return null;
         }
 
-        public Task<List<ComandaDetalleResponse>> GetComandasDetalle(DateTime fecha)
+        public async Task<List<ComandaResponse>> GetComandasDetalle(DateTime fecha)
         {
             var comandas = _queryComanda.SelectComandas(fecha);
             
             if (comandas != null)
             {
-                List<ComandaDetalleResponse> listaResponse = new List<ComandaDetalleResponse>();
+                List<ComandaResponse> listaResponse = new List<ComandaResponse>();
                 foreach (Comanda comanda in comandas)
                 {
                     var comandaMercaderia = _queryComandaMercaderia.SelectComandaMercaderia(comanda.ComandaId);
-                    ComandaDetalleResponse comandaDetalleResponse = new ComandaDetalleResponse();
+                    ComandaResponse comandaResponse = new ComandaResponse();
+                    comandaResponse.Mercaderias = new List<MercaderiaComandaResponse>();
 
                     foreach (ComandaMercaderia cm in comandaMercaderia)
                     {
-                        var mercaderia = _queryMercaderia.SelectMercaderia(cm.MercaderiaId);
-                        comandaDetalleResponse.Mercaderias.Add(new MercaderiaDTO()
+                        var mercaderia = await _queryMercaderia.SelectMercaderia(cm.MercaderiaId);
+                        comandaResponse.Mercaderias.Add(new MercaderiaComandaResponse()
                         {
-                            MercaderiaId = mercaderia.MercaderiaId,
+                            Id = mercaderia.MercaderiaId,
                             Nombre = mercaderia.Nombre,
-                            TipoMercaderiaId = mercaderia.TipoMercaderiaId,
                             Precio = mercaderia.Precio,
-                            Ingredientes = mercaderia.Ingredientes,
-                            Preparacion = mercaderia.Preparacion,
-                            Imagen = mercaderia.Imagen
                         });
                     }
-                    comandaDetalleResponse.ComandaId = comanda.ComandaId;
+                    comandaResponse.Id = comanda.ComandaId;
                     var formaEntrega = _queryFormaEntrega.GetFormaEntrega(comanda.FormaEntregaId);
-                    comandaDetalleResponse.FormaEntrega = new FormaEntregaDTO()
+                    comandaResponse.FormaEntrega = new FormaEntregaDTO()
                     {
-                        FormaEntregaId = formaEntrega.FormaEntregaId,
+                        Id = formaEntrega.FormaEntregaId,
                         Descripcion = formaEntrega.Descripcion
                     };
-                    comandaDetalleResponse.PrecioTotal = comanda.PrecioTotal;
-                    comandaDetalleResponse.Fecha = comanda.Fecha;
+                    comandaResponse.Total = comanda.PrecioTotal;
+                    comandaResponse.Fecha = comanda.Fecha;
 
-                    listaResponse.Add(comandaDetalleResponse);
+                    listaResponse.Add(comandaResponse);
                 }
-                return Task.FromResult(listaResponse);
+                return listaResponse;
             }
             return null;
         }
 
-        public Task<bool> InsertComanda(List<int> listaProductos, int formaEntrega)
+        public async Task<List<ComandaResponse>> GetComandasDetalleAll()
         {
-            var newComandaId = new GenerarIdentificador(_queryComanda).GenerarIdComanda();
+            List<ComandaResponse> listaComandaResponse = new List<ComandaResponse>();
+            var comandas = _queryComanda.SelectComanda();
+
+            foreach (var comanda in comandas)
+            {
+                ComandaResponse comandaResponse = new ComandaResponse();
+                var comandaMercaderia = _queryComandaMercaderia.SelectComandaMercaderia(comanda.ComandaId);
+                comandaResponse.Mercaderias = new List<MercaderiaComandaResponse>();
+
+                if (comandaMercaderia != null)
+                {
+                    foreach (ComandaMercaderia cm in comandaMercaderia)
+                    {
+                        var mercaderia = await _queryMercaderia.SelectMercaderia(cm.MercaderiaId);
+                        comandaResponse.Mercaderias.Add(new MercaderiaComandaResponse()
+                        {
+                            Id = mercaderia.MercaderiaId,
+                            Nombre = mercaderia.Nombre,
+                            Precio = mercaderia.Precio
+                        });
+                    }
+                    comandaResponse.Id = comanda.ComandaId;
+                    var formaEntrega = _queryFormaEntrega.GetFormaEntrega(comanda.FormaEntregaId);
+                    comandaResponse.FormaEntrega = new FormaEntregaDTO()
+                    {
+                        Id = formaEntrega.FormaEntregaId,
+                        Descripcion = formaEntrega.Descripcion
+                    };
+
+                    comandaResponse.Total = comanda.PrecioTotal;
+                    comandaResponse.Fecha = comanda.Fecha;
+
+                    listaComandaResponse.Add(comandaResponse);
+                }
+            }
+            return listaComandaResponse;
+        }
+
+        public  async Task<(ComandaResponse? response, string error)> InsertComanda(List<int> listaProductos, int formaEntrega)
+        {
+            DateTime fechaInsert = DateTime.Now;
+            ComandaResponse response = new ComandaResponse();
+            response.Mercaderias = new List<MercaderiaComandaResponse>();
             Comanda insertComanda = new Comanda()
             {
-                ComandaId= newComandaId.Result,
                 FormaEntregaId= formaEntrega,
                 PrecioTotal=0,
-                Fecha = DateTime.Now
+                Fecha = fechaInsert
             };
 
-            foreach(int mercaderiaId in listaProductos)
+            foreach (int mercaderiaId in listaProductos)
             {
-                var mercaderia = _queryMercaderia.SelectMercaderia(mercaderiaId);
-                _commandComandaMercaderia.InsertComandaMercaderia(new ComandaMercaderia()
+                var mercaderia = await _queryMercaderia.SelectMercaderia(mercaderiaId);
+
+                if(mercaderia == null) { return (null, $"Una de las mercaderias que se intento insertar no existe. La misma tiene por ID = {mercaderiaId}"); }
+
+                response.Mercaderias.Add(new MercaderiaComandaResponse()
                 {
-                    MercaderiaId= mercaderiaId,
-                    ComandaId= newComandaId.Result
+                    Id= mercaderia.MercaderiaId,
+                    Nombre = mercaderia.Nombre,
+                    Precio = mercaderia.Precio
                 });
                 insertComanda.PrecioTotal += mercaderia.Precio;
             }
+            response.Total = insertComanda.PrecioTotal;
 
-            return _commandComanda.InsertComanda(insertComanda);
+            var getFormaEntrega = _queryFormaEntrega.GetFormaEntrega(formaEntrega);
+            if (getFormaEntrega == null) { return (null, $"La forma de entrega no existe. El Id es : {formaEntrega}"); }
+            response.FormaEntrega = new FormaEntregaDTO() 
+            { 
+                Id= getFormaEntrega.FormaEntregaId, 
+                Descripcion= getFormaEntrega.Descripcion 
+            };
+            response.Fecha = fechaInsert;
+            var insert = await _commandComanda.InsertComanda(insertComanda);
+            response.Id = insert.ComandaId;
+            foreach (int mercaderiaId in listaProductos)
+            {
+                await _commandComandaMercaderia.InsertComandaMercaderia(new ComandaMercaderia()
+                {
+                    MercaderiaId = mercaderiaId,
+                    ComandaId = insert.ComandaId
+                });
+            }
+
+            return (response,"OK");
         }
     }
 }

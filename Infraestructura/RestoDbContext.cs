@@ -23,6 +23,7 @@ namespace Infraestructura
             modelBuilder.Entity<Comanda>(entity =>
             {
                 entity.HasKey(s => s.ComandaId);
+                entity.Property(s => s.ComandaId).ValueGeneratedOnAdd();
                 entity.HasOne<FormaEntrega>(o => o.FKFormaEntrega).WithMany(m => m.LsComanda).HasForeignKey(f => f.FormaEntregaId);
                 entity.HasMany<ComandaMercaderia>(m => m.LsComandaMercaderia).WithOne(o => o.FKComanda);
                 entity.Property(s => s.FormaEntregaId).IsRequired();

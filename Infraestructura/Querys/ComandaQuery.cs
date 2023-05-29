@@ -3,7 +3,6 @@ using Dominio.Entidades;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SlnManagerText;
-using System.ComponentModel.Design;
 
 namespace Infraestructura.Querys
 {

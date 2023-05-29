@@ -41,7 +41,7 @@ namespace Infraestructura.Querys
 
         }
 
-        public Mercaderia SelectMercaderia(string nombre)
+        public async Task<Mercaderia> SelectMercaderia(string nombre)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace Infraestructura.Querys
             }
         }
 
-        public Mercaderia SelectMercaderia(int mercaderiaId)
+        public async Task<Mercaderia> SelectMercaderia(int mercaderiaId)
         {
             try
             {

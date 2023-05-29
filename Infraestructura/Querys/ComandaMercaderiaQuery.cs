@@ -1,7 +1,6 @@
 ﻿using Aplicacion.Interfaces.Querys;
 using Dominio.Entidades;
 using SlnManagerText;
-using System.Runtime;
 
 namespace Infraestructura.Querys
 {
@@ -99,18 +98,18 @@ namespace Infraestructura.Querys
             }
         }
 
-        public (bool exist,int returnCode) ExisteMercaderiaEnComanda(int mercaderiaId)
+        public async Task<bool> ExisteMercaderiaEnComanda(int mercaderiaId)
         {
             try
             {
                 var existe = (from lsc in _context.ComandaMercaderia
                              where lsc.MercaderiaId == mercaderiaId
-                             select lsc).First();
+                             select lsc).FirstOrDefault();
                 if(existe != null)
                 {
-                    return (true,0);
+                    return true;
                 }
-                return (false,0);
+                return false;
                 
             }
             catch (ArgumentNullException ex)
@@ -120,7 +119,7 @@ namespace Infraestructura.Querys
                 {
                     log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
                 }
-                return (false, -1000);
+                return false;
             }
             catch (Exception ex)
             {
@@ -129,7 +128,7 @@ namespace Infraestructura.Querys
                 {
                     log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
                 }
-                return (false, -1001);
+                return false;
             }
         }
     }

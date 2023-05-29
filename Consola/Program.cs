@@ -180,7 +180,7 @@ async void tomarPedido(RestoDbContext dbConnection)
 
 }
 
-void listarPedido(RestoDbContext dbConnection)
+async void listarPedido(RestoDbContext dbConnection)
 {
 
     IComandaQuery comandaQuery = new ComandaQuery(dbConnection);
@@ -188,7 +188,7 @@ void listarPedido(RestoDbContext dbConnection)
     IMercaderiaQuery mercaderiaQuery = new MercaderiaQuery(dbConnection);
     IFormaEntregaQuery formaEntregaQuery = new FormaEntregaQuery(dbConnection);
     PedidoModule pedidoModule = new PedidoModule(comandaQuery, comandaMercaderiaQuery, mercaderiaQuery, formaEntregaQuery);
-    var lsPedido = pedidoModule.ListarPedidos();
+    var lsPedido = await pedidoModule.ListarPedidos();
     Console.Clear();
     Console.WriteLine("-------------------------------------------------------");
     Console.WriteLine("---- Bienvenido al Sistema de Gestion de Restorant ----");

@@ -19,7 +19,7 @@ namespace Aplicacion.CasosDeUso.Modulo
             _queryFormaEntrega = formaEntregaQuery;
         }
 
-        public List<PedidoDTO> ListarPedidos()
+        public async Task<List<PedidoDTO>> ListarPedidos()
         {
             List<PedidoDTO> pedidoDTOs = new List<PedidoDTO>();
 
@@ -30,7 +30,7 @@ namespace Aplicacion.CasosDeUso.Modulo
                 var lsComandaMercaderia = _queryComandaMercaderia.SelectComandaMercaderia(comanda.ComandaId);
                 foreach(var comandaMercaderia in lsComandaMercaderia)
                 {
-                    Mercaderia mercaderia = _queryMercaderia.SelectMercaderia(comandaMercaderia.MercaderiaId);
+                    Mercaderia mercaderia = await _queryMercaderia.SelectMercaderia(comandaMercaderia.MercaderiaId);
                     PedidoDTO pedido = new PedidoDTO
                     {
                         ComandaId= comanda.ComandaId,

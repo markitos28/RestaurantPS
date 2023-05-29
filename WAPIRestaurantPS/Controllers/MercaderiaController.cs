@@ -1,8 +1,6 @@
-﻿using Aplicacion.CasosDeUso.Servicios;
-using Aplicacion.Interfaces.Servicios;
+﻿using Aplicacion.Interfaces.Servicios;
 using Dominio.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
 
 namespace WAPIRestaurantPS.Controllers
 {
@@ -23,15 +21,17 @@ namespace WAPIRestaurantPS.Controllers
         {
             try
             {
-                if (tipo == null && nombre == null)
-                {
-                    return new JsonResult(new { Message = "Se debe ingresar al menos un parametros para filtrar la mercaderia." }) { StatusCode = 404 };
-                }
                 if (orden.ToUpper() != "ASC" && orden.ToUpper() != "DESC")
                 {
                     return new JsonResult(new { Message = "Se ha ingresado el parametro 'orden' incorrectamente. Debe ser ASC o DESC." }) { StatusCode = 404 };
                 }
-                List<MercaderiaDTO> mercaderias = new List<MercaderiaDTO>();
+                if (tipo == null && nombre == null)
+                {
+                    var responseAll = await _services.GetMercaderias();
+                    return new JsonResult(responseAll.OrderBy(o => o.Precio));
+                }
+                
+                List<MercaderiaResponse> mercaderias = new List<MercaderiaResponse>();
 
                 if (tipo == null)
                 {
@@ -50,7 +50,7 @@ namespace WAPIRestaurantPS.Controllers
             }
             catch
             {
-                return new JsonResult(new { Message = "Ha ocurrido un error en el microservicio." }) { StatusCode = 409 };
+                return new JsonResult(new { Message = "Ha ocurrido un error en el microservicio." }) { StatusCode = 500 };
             }
             
             
@@ -61,21 +61,20 @@ namespace WAPIRestaurantPS.Controllers
         {
             try
             {
-                var obj =  _services.GetMercaderia(id);
+                var obj = await  _services.GetMercaderia(id);
                 if (obj == null)
                 {
                     return NotFound(new {Message= "La mercaderia que intenta eliminar no existe."});
                 }
                 var delete = await  _services.DeleteMercaderia(id);
 
-                if (delete.status && delete.returnCode.Equals(0))
+                if(delete.response == null)
                 {
-                    return new JsonResult(obj) { StatusCode = 200 };
+                    return new JsonResult(new {message = delete.status}) { StatusCode = 409 };
                 }
-                else
-                {
-                    return new JsonResult(new { Message = "No se pudo eliminar la mercaderia" }) { StatusCode = 400 };
-                }
+
+                return new JsonResult(delete.response) { StatusCode = 200 };
+                
             }
             catch
             {
@@ -88,36 +87,16 @@ namespace WAPIRestaurantPS.Controllers
         {
             try
             {
-                var bbddMercaderia =  _services.GetMercaderia(id).Result;
-                if(bbddMercaderia == null)
+                var actionChange = await _services.UpdateMercaderia(id,mercaderia);
+                if(actionChange.response == null)
                 {
-                    return new JsonResult(new {Message = "El ID de mercaderia ingresado no existe para ser modificado."}) { StatusCode = 404 };
+                    return new JsonResult(new { message = actionChange.description }) { StatusCode= actionChange.error};
                 }
-                
-                MercaderiaDTO changeMercaderia = new MercaderiaDTO()
-                {
-                    MercaderiaId = id,
-                    Nombre = mercaderia.Nombre == "" || mercaderia.Nombre == "string" ? bbddMercaderia.Nombre : mercaderia.Nombre,
-                    TipoMercaderiaId = mercaderia.TipoMercaderiaId == 0 ? bbddMercaderia.TipoMercaderiaId: mercaderia.TipoMercaderiaId,
-                    Precio = mercaderia.Precio == 0 ? bbddMercaderia.Precio : mercaderia.Precio,
-                    Ingredientes = mercaderia.Ingredientes == "" || mercaderia.Ingredientes == "string" ? bbddMercaderia.Ingredientes: mercaderia.Ingredientes,
-                    Preparacion = mercaderia.Preparacion == "" || mercaderia.Preparacion  == "string" ? bbddMercaderia.Preparacion : mercaderia.Preparacion,
-                    Imagen = mercaderia.Imagen == "" || mercaderia.Imagen == "string" ? bbddMercaderia.Imagen : mercaderia.Imagen
-                };
-
-                var actionChange = await _services.UpdateMercaderia(changeMercaderia);
-                if(actionChange != null)
-                {
-                    return new JsonResult(actionChange) { StatusCode= 200};
-                }
-                else
-                {
-                    return new JsonResult(new {Message= "Ha ingresado datos incorrectos en los parametros."}) { StatusCode = 400 };
-                }
+                return new JsonResult(actionChange.response) { StatusCode = 200 };
             }
             catch
             {
-                return new JsonResult(new { Message = "Ha ocurrido un error en el Servidor." }) { StatusCode = 409 };
+                return new JsonResult(new { Message = "Ha ocurrido un error en el Servidor." }) { StatusCode = 500 };
             }
         }
 
@@ -128,7 +107,7 @@ namespace WAPIRestaurantPS.Controllers
             {
                 if (mercaderia.Nombre.Length > 50 || mercaderia.Nombre == "" || mercaderia.Nombre == "string")
                     return new JsonResult(new {Message = "El campo Nombre tiene mas de 50 caracteres, es vacio o no se ha modificado en la estructura del JSON."}) { StatusCode = 400};
-                if (mercaderia.TipoMercaderiaId == 0 )
+                if (mercaderia.Tipo == 0 )
                     return new JsonResult(new { Message = "El campo TipoMercaderiaId no se ha modificado en la estructura del JSON." }) { StatusCode = 400 };
                 if (mercaderia.Precio == 0)
                     return new JsonResult(new { Message = "El campo Precio no se ha modificado en la estructura del JSON." }) { StatusCode = 400 };
@@ -138,34 +117,20 @@ namespace WAPIRestaurantPS.Controllers
                     return new JsonResult(new { Message = "El campo Preparacion tiene mas de 255 caracteres, es vacio o no se ha modificado en la estructura del JSON." }) { StatusCode = 400 };
                 if (mercaderia.Imagen.Length > 256 || mercaderia.Imagen == "" || mercaderia.Imagen == "string")
                     return new JsonResult(new { Message = "El campo Imagen tiene mas de 255 caracteres, es vacio o no se ha modificado en la estructura del JSON." }) { StatusCode = 400 };
-
                 
-                if(_services.GetMercaderia(mercaderia.Nombre) != null)
+                if(_services.GetMercaderia(mercaderia.Nombre).Result != null)
                 {
-                    return new JsonResult(new { Message = "El nombre de la mercaderia que intenta insertar ya existe." }) { StatusCode = 400 };
+                    return new JsonResult(new { Message = "El nombre de la mercaderia que intenta insertar ya existe." }) { StatusCode = 409 };
                 }
 
-                MercaderiaDTO mapMercaderia = new MercaderiaDTO()
-                {
-                    Nombre = mercaderia.Nombre,
-                    TipoMercaderiaId = mercaderia.TipoMercaderiaId,
-                    Precio = mercaderia.Precio,
-                    Ingredientes= mercaderia.Ingredientes,
-                    Preparacion = mercaderia.Preparacion,
-                    Imagen = mercaderia.Imagen
-                };
+                var insert= await _services.AddMercaderia(mercaderia);
 
-                var insert= await _services.AddMercaderia(mapMercaderia);
-
-                if(insert != null)
+                if (insert.response == null)
                 {
-                    return new JsonResult(insert) { StatusCode = 201 };
+                    return new JsonResult(new { message = insert.error }) { StatusCode = 409 };
                 }
 
-                else
-                {
-                    return new JsonResult(new { Message = "No se ha insertado la mercaderia debido a un error." }) { StatusCode = 409 };
-                }
+                return new JsonResult( insert.response ) { StatusCode = 201 };
                 
             }
             catch
