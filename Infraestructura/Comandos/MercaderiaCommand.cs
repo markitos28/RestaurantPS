@@ -1,78 +1,57 @@
-﻿using Aplicacion.Interfaces.Querys;
+﻿using Aplicacion.Interfaces.Comandos;
+using Dominio.DTOs;
 using Dominio.Entidades;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SlnManagerText;
 
-namespace Infraestructura.Querys
-{
-    public class ComandaQuery: IComandaQuery
-    {
-        private readonly RestoDbContext _context;
 
-        public ComandaQuery(RestoDbContext context)
+namespace Infraestructura.Comandos
+{
+    public class MercaderiaCommand : IMercaderiaCommand
+    {
+        readonly private RestoDbContext _context;
+
+        public MercaderiaCommand(RestoDbContext context)
         {
             _context = context;
         }
-
-
-        public List<Comanda> SelectComanda()
+        public async Task<bool> DeleteMercaderia(int id)
         {
             try
             {
-                var lista = (from lsc in _context.Comanda
-                             select lsc).ToList();
-                return lista;
-            }
-            catch (ArgumentNullException ex)
-            {
-                var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
-                if (log.createLog())
+                var mercaderia = (from m in _context.Mercaderia
+                                  where m.MercaderiaId == id
+                                  select m).FirstOrDefault();
+                if (mercaderia != null)
                 {
-                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
-                }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
-                if (log.createLog())
-                {
-                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
-                }
-                return null;
-            }
-        }
-
-        /*
-         La funcion se utiliza para identificar si existe el identificador unico dentro de la tabla Comanda
-        En caso de arrojar alguna excepcion, se identifica con un "mensaje" para poder informarlo.
-         */
-        public (string mensaje ,Task<bool> resultado) ComandaExist(Guid comandaId)
-        {
-            try
-            {
-                
-                var find = (from c in _context.Comanda
-                            where c.ComandaId == comandaId
-                            select c.ComandaId).FirstOrDefault();
-                if (find.Equals(Guid.Empty))
-                {
-                    return ("OK",Task.FromResult(false));
+                    _context.Mercaderia.Remove(mercaderia);
+                    _context.SaveChanges();
+                    return true;
                 }
                 else
                 {
-                    return ("OK", Task.FromResult(true));
+                    return false;
                 }
             }
-            catch(InvalidOperationException ex)
+            catch (DbUpdateException ex)
             {
                 var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
                 if (log.createLog())
                 {
-                    log.writeLog(String.Concat("El proceso arrojo una excepcion 'InvalidOperationException' con error: ", ex.Message, " del archivo ", this.GetType()));
+                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
                 }
-                return ("Error: Operacion invalida",Task.FromResult(true));
+                return false;
+            }
+            catch (SqlException ex)
+            {
+                var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
+                if (log.createLog())
+                {
+                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
+                }
+                return false;
             }
             catch (Exception ex)
             {
@@ -81,18 +60,30 @@ namespace Infraestructura.Querys
                 {
                     log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
                 }
-                return ("Error: Ha ocurrido una excepcion", Task.FromResult(true));
+                return false;
             }
+
+
         }
 
-        public Comanda SelectComanda(Guid comandaId)
+        public async Task<Mercaderia> InsertMercaderia(MercaderiaDTO mercaderia)
         {
             try
             {
-                var comanda = (from c in _context.Comanda
-                               where c.ComandaId.Equals(comandaId)
-                               select c).FirstOrDefault();
-                return comanda;
+                Mercaderia mapMercaderia = new Mercaderia()
+                {
+                    TipoMercaderiaId = mercaderia.TipoMercaderiaId,
+                    Nombre = mercaderia.Nombre,
+                    Precio = mercaderia.Precio,
+                    Ingredientes = mercaderia.Ingredientes,
+                    Preparacion = mercaderia.Preparacion,
+                    Imagen = mercaderia.Imagen
+                };
+
+                _context.Add(mapMercaderia);
+                await _context.SaveChangesAsync();
+                
+                return mapMercaderia;
             }
             catch (DbUpdateException ex)
             {
@@ -123,14 +114,30 @@ namespace Infraestructura.Querys
             }
         }
 
-        public List<Comanda> SelectComandas(DateTime fecha)
+        public async Task<Mercaderia> UpdateMercaderia(int id, MercaderiaRequest mercaderia)
         {
+            
             try
             {
-                var comanda = (from c in _context.Comanda
-                               where c.Fecha.Equals(fecha)
-                               select c).ToList();
-                return comanda;
+                var select = (from m in _context.Mercaderia
+                              where m.MercaderiaId == id
+                              select m).FirstOrDefault();
+                if (select != null )
+                {
+                    select.Nombre = mercaderia.Nombre.IsNullOrEmpty() ? select.Nombre: mercaderia.Nombre;
+                    select.Precio = mercaderia.Precio.Equals(0) ? select.Precio: mercaderia.Precio;
+                    select.Preparacion = mercaderia.Preparacion.IsNullOrEmpty()?  select.Preparacion: mercaderia.Preparacion;
+                    select.Ingredientes = mercaderia.Ingredientes.IsNullOrEmpty() ? select.Ingredientes : mercaderia.Ingredientes;
+                    select.Imagen = mercaderia.Imagen.IsNullOrEmpty() ? select.Imagen : mercaderia.Imagen;
+                    select.TipoMercaderiaId = mercaderia.Tipo.Equals(0) ? select.TipoMercaderiaId: mercaderia.Tipo  ;
+
+                    _context.SaveChanges();
+                    return select;
+                }
+                
+                return null;
+                
+                
             }
             catch (DbUpdateException ex)
             {

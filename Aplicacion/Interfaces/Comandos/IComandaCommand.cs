@@ -4,6 +4,6 @@ namespace Aplicacion.Interfaces.Comandos
 {
     public interface IComandaCommand
     {
-        Task<bool> InsertComanda(Comanda objComanda);
+        Task<Comanda> InsertComanda(Comanda objComanda);
     }
 }

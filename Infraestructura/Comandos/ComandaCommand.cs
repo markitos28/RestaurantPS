@@ -12,7 +12,7 @@ namespace Infraestructura.Comandos
         {
             _context = context;
         }
-        public async Task<bool> InsertComanda(Comanda objComanda)
+        public async Task<Comanda> InsertComanda(Comanda objComanda)
         {
             try
             {
@@ -20,9 +20,9 @@ namespace Infraestructura.Comandos
                 {
                     _context.Add(objComanda);
                     await _context.SaveChangesAsync();
-                    return true;
+                    return objComanda;
                 }
-                return false;
+                return null;
             }
             catch(Exception ex)
             {
@@ -31,7 +31,7 @@ namespace Infraestructura.Comandos
                 {
                     log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
                 }
-                return false;
+                return null;
             }
         }
     }

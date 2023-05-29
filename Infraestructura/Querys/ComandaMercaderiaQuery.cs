@@ -97,5 +97,39 @@ namespace Infraestructura.Querys
                 return null;
             }
         }
+
+        public async Task<bool> ExisteMercaderiaEnComanda(int mercaderiaId)
+        {
+            try
+            {
+                var existe = (from lsc in _context.ComandaMercaderia
+                             where lsc.MercaderiaId == mercaderiaId
+                             select lsc).FirstOrDefault();
+                if(existe != null)
+                {
+                    return true;
+                }
+                return false;
+                
+            }
+            catch (ArgumentNullException ex)
+            {
+                var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
+                if (log.createLog())
+                {
+                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                var log = new ManagerText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\Logs"));
+                if (log.createLog())
+                {
+                    log.writeLog(String.Concat("El proceso arrojo un error en la linea ", ex.Message, " del archivo ", this.GetType()));
+                }
+                return false;
+            }
+        }
     }
 }

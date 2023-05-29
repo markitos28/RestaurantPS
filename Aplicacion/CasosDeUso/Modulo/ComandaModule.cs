@@ -16,11 +16,10 @@ namespace Aplicacion.CasosDeUso.Modulo
             _query = query;
         }
 
-        public Task<bool> InsertarComanda (ComandaDTO objComanda)
+        public Task<Comanda> InsertarComanda (ComandaDTO objComanda)
         {
             Comanda comanda = new Comanda
             {
-                ComandaId = objComanda.ComandaId,
                 FormaEntregaId = objComanda.FormaEntregaId,
                 PrecioTotal= objComanda.PrecioTotal,
                 Fecha= objComanda.Fecha

@@ -6,11 +6,11 @@ namespace Dominio.DTOs
     {
         [Key]
         [Required]
-        public int FormaEntregaId { get; set; }
+        public int Id { get; set; }
         [Required]
         [StringLength(50)]
         public string Descripcion { get; set; }
-        public List<ComandaDTO> LsComanda { get; set; }
+        
 
     }
 }

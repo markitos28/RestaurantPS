@@ -26,6 +26,8 @@ namespace Infraestructura.Comandos
                 }
                 return false;
 
+                
+
             }
             catch(DbUpdateException ex )
             {

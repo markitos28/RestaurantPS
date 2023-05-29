@@ -11,16 +11,19 @@ namespace Infraestructura
         public DbSet<Mercaderia> Mercaderia { get; set; }
         public DbSet<TipoMercaderia> TipoMercaderia { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public RestoDbContext(DbContextOptions<RestoDbContext> options) : base(options)
         {
-            optionsBuilder.UseSqlServer(@"server= DESKTOP-LFB6P0N; Database=Staging; Integrated Security=True; TrustServerCertificate=true;");
+
         }
+
+        public RestoDbContext() { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Comanda>(entity =>
             {
                 entity.HasKey(s => s.ComandaId);
+                entity.Property(s => s.ComandaId).ValueGeneratedOnAdd();
                 entity.HasOne<FormaEntrega>(o => o.FKFormaEntrega).WithMany(m => m.LsComanda).HasForeignKey(f => f.FormaEntregaId);
                 entity.HasMany<ComandaMercaderia>(m => m.LsComandaMercaderia).WithOne(o => o.FKComanda);
                 entity.Property(s => s.FormaEntregaId).IsRequired();
