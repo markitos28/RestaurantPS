@@ -29,6 +29,7 @@ namespace Aplicacion.CasosDeUso.Servicios
             {
                 return (null, $"El tipo de mercaderia '{mercaderia.Tipo}' no es valido o no existe. Por favor, primero inserte el tipo de mercaderia o ingrese un tipo de mercaderia valido y vuelva a intentarlo");
             }
+
             MercaderiaDTO mapMercaderia = new MercaderiaDTO()
             {
                 Nombre = mercaderia.Nombre,
@@ -183,7 +184,11 @@ namespace Aplicacion.CasosDeUso.Servicios
             }
             if(tipoMercaderia == null && !mercaderia.Tipo.Equals(0))
             {
-                return (null, $"El tipo de mercaderia {mercaderia.Tipo} que ingreso no existe o no es valido. Por favor primero inserte el tipo de mercaderia o ingrese uno valido",404); 
+                return (null, $"El tipo de mercaderia {mercaderia.Tipo} que ingreso no existe o no es valido. Por favor primero inserte el tipo de mercaderia o ingrese uno valido",400); 
+            }
+            if(mercaderia.Precio <= 0)
+            {
+                return (null, $"El precio de la mercaderia ${mercaderia.Precio} que ingreso debe ser mayor a cero. Por favor ingrese un numero valido", 400);
             }
 
             var update = await _command.UpdateMercaderia(id,mercaderia);

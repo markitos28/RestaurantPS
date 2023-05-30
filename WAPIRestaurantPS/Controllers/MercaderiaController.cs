@@ -1,6 +1,7 @@
 ﻿using Aplicacion.Interfaces.Servicios;
 using Dominio.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WAPIRestaurantPS.Controllers
 {
@@ -23,7 +24,7 @@ namespace WAPIRestaurantPS.Controllers
             {
                 if (orden.ToUpper() != "ASC" && orden.ToUpper() != "DESC")
                 {
-                    return new JsonResult(new { Message = "Se ha ingresado el parametro 'orden' incorrectamente. Debe ser ASC o DESC." }) { StatusCode = 404 };
+                    return new JsonResult(new { Message = "Se ha ingresado el parametro 'orden' incorrectamente. Debe ser ASC o DESC." }) { StatusCode = 400 };
                 }
                 if (tipo == null && nombre == null)
                 {
@@ -61,10 +62,15 @@ namespace WAPIRestaurantPS.Controllers
         {
             try
             {
+                if (id <= 0)
+                {
+                    new JsonResult(new { message = "El id ingresado no es valido. Ingrese un valor positivo y distinto de cero." }) { StatusCode = 400 };
+                }
+
                 var obj = await  _services.GetMercaderia(id);
                 if (obj == null)
                 {
-                    return NotFound(new {Message= "La mercaderia que intenta eliminar no existe."});
+                    return new JsonResult(new {message= "La mercaderia que intenta eliminar no existe."}) { StatusCode= 404};
                 }
                 var delete = await  _services.DeleteMercaderia(id);
 
@@ -78,7 +84,7 @@ namespace WAPIRestaurantPS.Controllers
             }
             catch
             {
-                return new JsonResult(new { Message = "Hubo un error en el microservicio. Intente mas tarde" }) { StatusCode = 409 };
+                return new JsonResult(new { Message = "Hubo un error en el microservicio. Intente mas tarde" }) { StatusCode = 500 };
             }
         }
 
@@ -87,6 +93,11 @@ namespace WAPIRestaurantPS.Controllers
         {
             try
             {
+                if (id <= 0)
+                {
+                    new JsonResult(new { message = "El id ingresado no es valido. Ingrese un valor positivo y distinto de cero." }) { StatusCode = 400 };
+                }
+
                 var actionChange = await _services.UpdateMercaderia(id,mercaderia);
                 if(actionChange.response == null)
                 {
@@ -105,18 +116,18 @@ namespace WAPIRestaurantPS.Controllers
         {
             try
             {
-                if (mercaderia.Nombre.Length > 50 || mercaderia.Nombre == "" || mercaderia.Nombre == "string")
-                    return new JsonResult(new {Message = "El campo Nombre tiene mas de 50 caracteres, es vacio o no se ha modificado en la estructura del JSON."}) { StatusCode = 400};
-                if (mercaderia.Tipo == 0 )
-                    return new JsonResult(new { Message = "El campo TipoMercaderiaId no se ha modificado en la estructura del JSON." }) { StatusCode = 400 };
-                if (mercaderia.Precio == 0)
-                    return new JsonResult(new { Message = "El campo Precio no se ha modificado en la estructura del JSON." }) { StatusCode = 400 };
-                if (mercaderia.Ingredientes.Length > 256 || mercaderia.Ingredientes == "" || mercaderia.Ingredientes == "string")
-                    return new JsonResult(new { Message = "El campo Ingredientes tiene mas de 255 caracteres, es vacio o no se ha modificado en la estructura del JSON." }) { StatusCode = 400 };
-                if (mercaderia.Preparacion.Length > 256 || mercaderia.Preparacion == "" || mercaderia.Preparacion == "string")
-                    return new JsonResult(new { Message = "El campo Preparacion tiene mas de 255 caracteres, es vacio o no se ha modificado en la estructura del JSON." }) { StatusCode = 400 };
-                if (mercaderia.Imagen.Length > 256 || mercaderia.Imagen == "" || mercaderia.Imagen == "string")
-                    return new JsonResult(new { Message = "El campo Imagen tiene mas de 255 caracteres, es vacio o no se ha modificado en la estructura del JSON." }) { StatusCode = 400 };
+                if (mercaderia.Nombre.Length > 50 || mercaderia.Nombre.IsNullOrEmpty() )
+                    return new JsonResult(new {Message = "El campo Nombre tiene mas de 50 caracteres, es vacio o no se ha modificado en la estructura."}) { StatusCode = 400};
+                if (mercaderia.Tipo <= 0 )
+                    return new JsonResult(new { Message = "El campo TipoMercaderiaId debe ser mayor a cero." }) { StatusCode = 400 };
+                if (mercaderia.Precio <= 0)
+                    return new JsonResult(new { Message = "El campo Precio debe ser mayor a cero." }) { StatusCode = 400 };
+                if (mercaderia.Ingredientes.Length > 256 || mercaderia.Ingredientes.IsNullOrEmpty())
+                    return new JsonResult(new { Message = "El campo Ingredientes tiene mas de 255 caracteres, es vacio o no se ha modificado en la estructura." }) { StatusCode = 400 };
+                if (mercaderia.Preparacion.Length > 256 || mercaderia.Preparacion.IsNullOrEmpty())
+                    return new JsonResult(new { Message = "El campo Preparacion tiene mas de 255 caracteres, es vacio o no se ha modificado en la estructura." }) { StatusCode = 400 };
+                if (mercaderia.Imagen.Length > 256 || mercaderia.Imagen.IsNullOrEmpty())
+                    return new JsonResult(new { Message = "El campo Imagen tiene mas de 255 caracteres, es vacio o no se ha modificado en la estructura." }) { StatusCode = 400 };
                 
                 if(_services.GetMercaderia(mercaderia.Nombre).Result != null)
                 {
@@ -127,7 +138,7 @@ namespace WAPIRestaurantPS.Controllers
 
                 if (insert.response == null)
                 {
-                    return new JsonResult(new { message = insert.error }) { StatusCode = 409 };
+                    return new JsonResult(new { message = insert.error }) { StatusCode = 400 };
                 }
 
                 return new JsonResult( insert.response ) { StatusCode = 201 };
@@ -144,6 +155,10 @@ namespace WAPIRestaurantPS.Controllers
         {
             try
             {
+                if(id <= 0)
+                {
+                    new JsonResult(new {message= "El id ingresado no es valido. Ingrese un valor positivo y distinto de cero."}) { StatusCode = 400 };
+                }
                 var selectMercaderia =  await _services.GetMercaderia(id);
                 
                 if(selectMercaderia != null)
@@ -152,7 +167,7 @@ namespace WAPIRestaurantPS.Controllers
                 }
                 else
                 {
-                    return NotFound(new { Message = "La mercaderia que se intenta consultar no existe." });
+                    return new JsonResult(new { Message = "La mercaderia que se intenta consultar no existe." }) { StatusCode= 404};
                 }
             }
             catch

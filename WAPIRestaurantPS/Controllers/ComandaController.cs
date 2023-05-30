@@ -33,14 +33,14 @@ namespace WAPIRestaurantPS.Controllers
                 var validate = DateTime.TryParse(fecha, out fechaValida);
                 if (!validate)
                 {
-                    return new JsonResult(new { Message = "La fecha ingresada no tiene el formato correcto. Asegurese que el formato sea uno soportado. Ejemplo: DD/MM/AAAA" }) { StatusCode = 400 };
+                    return new JsonResult(new { Message = "La fecha ingresada no tiene el formato correcto. Asegurese que el formato sea uno soportado. Ejemplo: DD-MM-AAAA" }) { StatusCode = 400 };
                 }
 
                 var comandas = await _services.GetComandasDetalle(fechaValida);
 
                 if (comandas == null || comandas.Count.Equals(0))
                 {
-                    return new JsonResult(new { }) { StatusCode = 200 };
+                    return new JsonResult(new List<ComandaResponse>()) { StatusCode = 200 };
                 }
 
                 return new JsonResult(comandas);

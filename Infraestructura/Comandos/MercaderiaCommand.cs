@@ -125,11 +125,11 @@ namespace Infraestructura.Comandos
                 if (select != null )
                 {
                     select.Nombre = mercaderia.Nombre.IsNullOrEmpty() ? select.Nombre: mercaderia.Nombre;
-                    select.Precio = mercaderia.Precio.Equals(0) ? select.Precio: mercaderia.Precio;
+                    select.Precio = mercaderia.Precio <= 0 ? select.Precio: mercaderia.Precio;
                     select.Preparacion = mercaderia.Preparacion.IsNullOrEmpty()?  select.Preparacion: mercaderia.Preparacion;
                     select.Ingredientes = mercaderia.Ingredientes.IsNullOrEmpty() ? select.Ingredientes : mercaderia.Ingredientes;
                     select.Imagen = mercaderia.Imagen.IsNullOrEmpty() ? select.Imagen : mercaderia.Imagen;
-                    select.TipoMercaderiaId = mercaderia.Tipo.Equals(0) ? select.TipoMercaderiaId: mercaderia.Tipo  ;
+                    select.TipoMercaderiaId = mercaderia.Tipo <= 0 ? select.TipoMercaderiaId: mercaderia.Tipo  ;
 
                     _context.SaveChanges();
                     return select;
